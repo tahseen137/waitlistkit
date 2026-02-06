@@ -1,0 +1,59 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  
+  // Customization
+  primaryColor String  @default("#6366f1")
+  logo        String?
+  
+  // Copy customization
+  headline    String  @default("Join the waitlist")
+  subheadline String  @default("Be the first to know when we launch")
+  buttonText  String  @default("Join waitlist")
+  
+  // Tier
+  tier        String  @default("free") // free or pro
+  
+  // Admin
+  adminEmail  String
+  adminSecret String  // Simple secret for admin access
+  
+  signups     Signup[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Signup {
+  id          String   @id @default(cuid())
+  email       String
+  position    Int      // Position in waitlist
+  referralCode String  @unique
+  
+  // Referral tracking
+  referredBy  String?  // referralCode of referrer
+  referralCount Int    @default(0) // How many people they referred
+  
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([projectId, email])
+  @@index([projectId, position])
+  @@index([referralCode])
+}
