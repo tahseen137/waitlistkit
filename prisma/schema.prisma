@@ -25,8 +25,15 @@ model Project {
   subheadline String  @default("Be the first to know when we launch")
   buttonText  String  @default("Join waitlist")
   
-  // Tier
+  // Tier (legacy)
   tier        String  @default("free") // free or pro
+  
+  // Stripe subscription fields
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  stripePriceId        String?
+  plan                 String   @default("free") // "free", "pro", "business"
+  planExpiresAt        DateTime?
   
   // Admin
   adminEmail  String
@@ -36,6 +43,9 @@ model Project {
   
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  
+  @@index([stripeCustomerId])
+  @@index([stripeSubscriptionId])
 }
 
 model Signup {

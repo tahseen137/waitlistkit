@@ -7,6 +7,7 @@ const plans = [
   {
     name: 'Free',
     price: 0,
+    yearlyPrice: 0,
     description: 'Perfect for testing the waters',
     features: [
       '1 waitlist',
@@ -19,10 +20,12 @@ const plans = [
     href: '/',
     popular: false,
     priceId: null,
+    yearlyPriceId: null,
   },
   {
     name: 'Pro',
     price: 19,
+    yearlyPrice: 15, // $182.40/year = ~$15.20/mo
     description: 'For growing products',
     features: [
       '5 waitlists',
@@ -36,10 +39,12 @@ const plans = [
     cta: 'Upgrade to Pro',
     popular: true,
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
+    yearlyPriceId: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
   },
   {
     name: 'Business',
     price: 49,
+    yearlyPrice: 39, // $470.40/year = ~$39.20/mo
     description: 'For serious launches',
     features: [
       'Unlimited waitlists',
@@ -54,6 +59,7 @@ const plans = [
     cta: 'Go Business',
     popular: false,
     priceId: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID,
+    yearlyPriceId: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
   },
 ]
 
@@ -167,7 +173,7 @@ export default function PricingPage() {
                 <p className="text-gray-500 mb-4">{plan.description}</p>
                 <div className="flex items-end justify-center gap-1">
                   <span className="text-5xl font-bold text-gray-900">
-                    ${billingPeriod === 'yearly' ? Math.round(plan.price * 0.8) : plan.price}
+                    ${billingPeriod === 'yearly' ? plan.yearlyPrice : plan.price}
                   </span>
                   {plan.price > 0 && (
                     <span className="text-gray-500 mb-2">/month</span>
@@ -175,7 +181,7 @@ export default function PricingPage() {
                 </div>
                 {billingPeriod === 'yearly' && plan.price > 0 && (
                   <p className="text-sm text-gray-500 mt-1">
-                    Billed ${Math.round(plan.price * 0.8 * 12)}/year
+                    Billed ${plan.yearlyPrice * 12}/year
                   </p>
                 )}
               </div>
@@ -214,7 +220,10 @@ export default function PricingPage() {
                 </Link>
               ) : (
                 <button
-                  onClick={() => handleCheckout(plan.priceId, plan.name)}
+                  onClick={() => handleCheckout(
+                    billingPeriod === 'yearly' ? plan.yearlyPriceId : plan.priceId,
+                    plan.name
+                  )}
                   disabled={loading === plan.name}
                   className={`w-full py-3 px-6 rounded-xl font-semibold transition disabled:opacity-50 ${
                     plan.popular
