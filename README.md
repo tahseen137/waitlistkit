@@ -90,7 +90,29 @@ DATABASE_URL="file:./dev.db"
 
 # For production, use PostgreSQL:
 # DATABASE_URL="postgresql://user:password@host:5432/database"
+
+# Stripe (for payments - get from https://dashboard.stripe.com/test/apikeys)
+STRIPE_SECRET_KEY="sk_test_..."
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+
+# Stripe Price IDs (create these in Stripe Dashboard > Products)
+NEXT_PUBLIC_STRIPE_PRO_PRICE_ID="price_..."
+NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID="price_..."
+STRIPE_PRO_PRICE_ID="price_..."
+STRIPE_BUSINESS_PRICE_ID="price_..."
 ```
+
+### Setting up Stripe
+
+1. Create a [Stripe account](https://dashboard.stripe.com/register) (if you don't have one)
+2. Go to **Developers > API Keys** to get your keys
+3. Create two products in **Products**:
+   - **Pro** ($19/month): For growing products
+   - **Business** ($49/month): For serious launches
+4. Copy the Price IDs for each product
+5. For webhooks, create an endpoint pointing to `https://your-domain.com/api/webhooks/stripe`
+   - Listen for: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_succeeded`, `invoice.payment_failed`
 
 ### Database Setup
 
@@ -142,6 +164,13 @@ npm start
    - Import your GitHub repository
    - Add environment variables:
      - `DATABASE_URL` (PostgreSQL connection string)
+     - `STRIPE_SECRET_KEY` (Stripe secret key)
+     - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (Stripe publishable key)
+     - `STRIPE_WEBHOOK_SECRET` (Stripe webhook secret)
+     - `NEXT_PUBLIC_STRIPE_PRO_PRICE_ID` (Pro plan price ID)
+     - `NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID` (Business plan price ID)
+     - `STRIPE_PRO_PRICE_ID` (Pro plan price ID - server side)
+     - `STRIPE_BUSINESS_PRICE_ID` (Business plan price ID - server side)
    - Deploy!
 
 3. **Set up Database**

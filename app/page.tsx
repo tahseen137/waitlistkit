@@ -194,9 +194,9 @@ export default function Home() {
                   Priority support
                 </li>
               </ul>
-              <button className="w-full bg-white text-indigo-600 font-bold py-3 rounded-lg hover:bg-gray-100 transition">
-                Coming Soon
-              </button>
+              <a href="/pricing" className="block w-full bg-white text-indigo-600 font-bold py-3 rounded-lg hover:bg-gray-100 transition text-center">
+                Upgrade to Pro
+              </a>
             </div>
           </div>
         </div>
