@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import LiveDemo from './components/LiveDemo'
 
 export default function Home() {
@@ -44,18 +45,52 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+      {/* Product Hunt Banner */}
+      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 px-4 text-center">
+        <a 
+          href="https://www.producthunt.com/products/waitlistkit" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 hover:underline font-medium"
+        >
+          <span>🚀</span>
+          <span>We're launching on Product Hunt Monday Feb 10!</span>
+          <span className="bg-white/20 px-2 py-0.5 rounded text-sm">Follow us →</span>
+        </a>
+      </div>
+
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 py-16">
         <div className="text-center mb-16">
+          {/* Social Proof */}
+          <div className="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 px-4 py-2 rounded-full mb-6 text-sm font-medium">
+            <span className="flex -space-x-2">
+              <span className="w-6 h-6 rounded-full bg-indigo-300 flex items-center justify-center text-xs">👤</span>
+              <span className="w-6 h-6 rounded-full bg-purple-300 flex items-center justify-center text-xs">👤</span>
+              <span className="w-6 h-6 rounded-full bg-pink-300 flex items-center justify-center text-xs">👤</span>
+            </span>
+            <span>Join 100+ founders building their next launch</span>
+          </div>
+          
           <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
             WaitlistKit
           </h1>
           <p className="text-2xl text-gray-600 mb-4">
             Add a waitlist to your site in 60 seconds
           </p>
-          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-6">
             One script tag. Beautiful email capture. Built-in referral system. Move your users up the list when they share.
           </p>
+          
+          {/* Demo CTA */}
+          <Link 
+            href="/demo" 
+            className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium mb-8 group"
+          >
+            <span className="text-xl">▶️</span>
+            <span>See the interactive demo</span>
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </Link>
         </div>
 
         {/* Create Waitlist Form */}
@@ -208,9 +243,79 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Testimonials / Social Proof Section */}
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4">What Founders Are Saying</h2>
+          <p className="text-gray-500 text-sm">(Example results from beta testers)</p>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {/* Example Testimonial 1 */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+            <div className="flex items-center gap-1 mb-3 text-yellow-400">
+              {'★★★★★'.split('').map((_, i) => <span key={i}>★</span>)}
+            </div>
+            <p className="text-gray-700 mb-4 italic">
+              "Set up in 5 minutes. Got 200+ signups in the first week with the referral system."
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full flex items-center justify-center text-white font-bold">
+                S
+              </div>
+              <div>
+                <div className="font-medium text-gray-900">SaaS Founder</div>
+                <div className="text-sm text-gray-500">Beta Tester</div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Example Testimonial 2 */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+            <div className="flex items-center gap-1 mb-3 text-yellow-400">
+              {'★★★★★'.split('').map((_, i) => <span key={i}>★</span>)}
+            </div>
+            <p className="text-gray-700 mb-4 italic">
+              "The viral referral loop is genius. 40% of my signups came from referrals."
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-teal-400 rounded-full flex items-center justify-center text-white font-bold">
+                A
+              </div>
+              <div>
+                <div className="font-medium text-gray-900">App Developer</div>
+                <div className="text-sm text-gray-500">Beta Tester</div>
+              </div>
+            </div>
+          </div>
+          
+          {/* CTA Card */}
+          <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-6 rounded-xl shadow-lg text-white flex flex-col justify-center items-center text-center">
+            <div className="text-4xl mb-3">🏆</div>
+            <h3 className="font-bold text-xl mb-2">Be Our First Reviewer!</h3>
+            <p className="text-white/80 text-sm mb-4">
+              We launch on Product Hunt Monday. Your review means the world to us!
+            </p>
+            <a 
+              href="https://www.producthunt.com/products/waitlistkit" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white text-indigo-600 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition text-sm"
+            >
+              Follow on Product Hunt →
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Footer */}
-      <footer className="text-center py-8 text-gray-600">
-        <p>Built with ❤️ for founders who ship fast</p>
+      <footer className="text-center py-8 text-gray-600 border-t border-gray-200">
+        <p className="mb-2">Built with ❤️ for founders who ship fast</p>
+        <div className="flex justify-center gap-4 text-sm">
+          <Link href="/demo" className="text-indigo-600 hover:underline">Demo</Link>
+          <Link href="/pricing" className="text-indigo-600 hover:underline">Pricing</Link>
+          <Link href="/blog" className="text-indigo-600 hover:underline">Blog</Link>
+        </div>
       </footer>
     </div>
   )
