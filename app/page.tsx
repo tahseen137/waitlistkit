@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import LiveDemo from './components/LiveDemo'
 
 export default function Home() {
   const router = useRouter()
@@ -132,8 +133,13 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Live Demo */}
+        <div className="mb-20">
+          <LiveDemo />
+        </div>
+
         {/* Code Example */}
-        <div className="bg-gray-900 text-gray-100 rounded-xl p-8 shadow-2xl mb-16">
+        <div id="create" className="bg-gray-900 text-gray-100 rounded-xl p-8 shadow-2xl mb-16">
           <h3 className="text-xl font-bold mb-4 text-white">How to Use</h3>
           <p className="text-gray-300 mb-4">Just add this to your HTML:</p>
           <pre className="bg-gray-800 p-4 rounded-lg overflow-x-auto">
@@ -175,7 +181,7 @@ export default function Home() {
             </div>
             <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-xl shadow-2xl transform scale-105">
               <h3 className="text-2xl font-bold mb-2">Pro</h3>
-              <div className="text-4xl font-bold mb-4">$9<span className="text-xl">/mo</span></div>
+              <div className="text-4xl font-bold mb-4">$19<span className="text-xl">/mo</span></div>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center">
                   <span className="text-yellow-300 mr-2">✓</span>
