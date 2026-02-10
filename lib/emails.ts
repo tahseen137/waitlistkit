@@ -17,7 +17,7 @@ interface DayFiveEmailData {
   email: string
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://waitlist.ca'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://waitlistkit.ca'
 
 // Shared styles
 const styles = {

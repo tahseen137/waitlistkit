@@ -49,7 +49,7 @@ export default function CheckoutCancelPage() {
             Have questions about our pricing?
           </p>
           <a
-            href="mailto:support@waitlist.ca"
+            href="mailto:support@waitlistkit.ca"
             className="text-indigo-600 hover:text-indigo-700 font-medium"
           >
             Contact Support →
