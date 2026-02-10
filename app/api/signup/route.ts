@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { generateReferralCode, isValidEmail } from '@/lib/utils'
+import { sendWelcomeEmail } from '@/lib/email-service'
 
 export async function POST(request: NextRequest) {
   try {
@@ -47,47 +48,42 @@ export async function POST(request: NextRequest) {
     })
 
     if (existingSignup) {
+      // Calculate dynamic rank for existing user
+      const rank = await prisma.signup.count({
+        where: {
+          projectId,
+          OR: [
+            { referralCount: { gt: existingSignup.referralCount } },
+            { referralCount: existingSignup.referralCount, createdAt: { lt: existingSignup.createdAt } }
+          ]
+        }
+      }) + 1
+
       return NextResponse.json({
-        signup: existingSignup,
+        signup: { ...existingSignup, position: rank },
         alreadySignedUp: true
       })
     }
 
-    // Calculate position
+    // Calculate position (insertion order)
     const signupCount = await prisma.signup.count({
       where: { projectId }
     })
     
     let position = signupCount + 1
     
-    // If referred by someone, calculate boosted position
+    // Handle referral (atomic increment, no shifting)
     if (referredBy) {
       const referrer = await prisma.signup.findUnique({
         where: { referralCode: referredBy }
       })
       
       if (referrer && referrer.projectId === projectId) {
-        // Update referrer's count
+        // Just increment the count safely
         await prisma.signup.update({
           where: { id: referrer.id },
           data: { referralCount: { increment: 1 } }
         })
-        
-        // Move referrer up based on referral count
-        const newReferrerPosition = Math.max(1, referrer.position - 1)
-        await prisma.signup.update({
-          where: { id: referrer.id },
-          data: { position: newReferrerPosition }
-        })
-        
-        // Update positions of others
-        await prisma.$executeRaw`
-          UPDATE Signup 
-          SET position = position + 1 
-          WHERE projectId = ${projectId} 
-          AND position >= ${newReferrerPosition}
-          AND id != ${referrer.id}
-        `
       }
     }
 
@@ -100,6 +96,11 @@ export async function POST(request: NextRequest) {
         referralCode: generateReferralCode(),
         referredBy: referredBy || null
       }
+    })
+
+    // Send welcome email (fire and forget - don't block the response)
+    sendWelcomeEmail(signup.id).catch((err) => {
+      console.error('Failed to send welcome email:', err)
     })
 
     return NextResponse.json({ signup })

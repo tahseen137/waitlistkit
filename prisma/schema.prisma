@@ -58,6 +58,11 @@ model Signup {
   referredBy  String?  // referralCode of referrer
   referralCount Int    @default(0) // How many people they referred
   
+  // Email tracking for drip sequence
+  welcomeEmailSentAt DateTime?
+  day2EmailSentAt    DateTime?
+  day5EmailSentAt    DateTime?
+  
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   
