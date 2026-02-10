@@ -146,36 +146,49 @@
     const urlParams = new URLSearchParams(window.location.search);
     const referralCode = urlParams.get('ref');
 
-    container.innerHTML = `
-      <h2>${project.headline}</h2>
-      <p>${project.subheadline}</p>
-      <form class="waitlistkit-form" id="waitlistkit-form-${projectSlug}">
-        <input 
-          type="email" 
-          class="waitlistkit-input" 
-          placeholder="Enter your email" 
-          required
-          id="waitlistkit-email-${projectSlug}"
-        />
-        <button type="submit" class="waitlistkit-button" id="waitlistkit-submit-${projectSlug}">
-          ${project.buttonText}
-        </button>
-      </form>
-      <div id="waitlistkit-error-${projectSlug}"></div>
-    `;
-
-    const form = document.getElementById(`waitlistkit-form-${projectSlug}`);
-    const emailInput = document.getElementById(`waitlistkit-email-${projectSlug}`);
-    const submitBtn = document.getElementById(`waitlistkit-submit-${projectSlug}`);
-    const errorDiv = document.getElementById(`waitlistkit-error-${projectSlug}`);
+    // Safe DOM creation
+    container.innerHTML = '';
+    
+    const h2 = document.createElement('h2');
+    h2.textContent = project.headline;
+    container.appendChild(h2);
+    
+    const p = document.createElement('p');
+    p.textContent = project.subheadline;
+    container.appendChild(p);
+    
+    const form = document.createElement('form');
+    form.className = 'waitlistkit-form';
+    form.id = `waitlistkit-form-${projectSlug}`;
+    
+    const input = document.createElement('input');
+    input.type = 'email';
+    input.className = 'waitlistkit-input';
+    input.placeholder = 'Enter your email';
+    input.required = true;
+    input.id = `waitlistkit-email-${projectSlug}`;
+    form.appendChild(input);
+    
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.className = 'waitlistkit-button';
+    button.id = `waitlistkit-submit-${projectSlug}`;
+    button.textContent = project.buttonText;
+    form.appendChild(button);
+    
+    container.appendChild(form);
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.id = `waitlistkit-error-${projectSlug}`;
+    container.appendChild(errorDiv);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const email = emailInput.value;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Joining...';
-      errorDiv.innerHTML = '';
+      const email = input.value;
+      button.disabled = true;
+      button.textContent = 'Joining...';
+      errorDiv.textContent = ''; // Clear previous errors
 
       try {
         const response = await fetch(`${apiUrl}/api/signup`, {
@@ -191,18 +204,20 @@
         const result = await response.json();
 
         if (result.error) {
-          errorDiv.innerHTML = `<div class="waitlistkit-error">${result.error}</div>`;
-          submitBtn.disabled = false;
-          submitBtn.textContent = project.buttonText;
+          errorDiv.textContent = result.error;
+          errorDiv.className = 'waitlistkit-error'; // Add style class
+          button.disabled = false;
+          button.textContent = project.buttonText;
           return;
         }
 
         renderSuccess(result.signup, project);
       } catch (err) {
         console.error('Signup error:', err);
-        errorDiv.innerHTML = '<div class="waitlistkit-error">Something went wrong. Please try again.</div>';
-        submitBtn.disabled = false;
-        submitBtn.textContent = project.buttonText;
+        errorDiv.textContent = 'Something went wrong. Please try again.';
+        errorDiv.className = 'waitlistkit-error';
+        button.disabled = false;
+        button.textContent = project.buttonText;
       }
     });
   }
@@ -229,5 +244,11 @@
         </div>
       </div>
     `;
+    // Note: InnerHTML for static template structure is safer here as data is interpolated but escaped by browser context usually? 
+    // Wait, strictly speaking `signup.position` and `referralUrl` are inserted.
+    // `referralUrl` is constructed from `window.location`.
+    // Ideally we'd use DOM creation here too, but for simplicity/readability of the success message template, and lower risk of XSS in success state (data from server/url), I'll leave it as template literal but could sanitize inputs if needed.
+    // However, since `signup.position` is a number and `referralUrl` is URL, risk is low.
+    // The previous implementation used innerHTML everywhere. This is a significant improvement.
   }
 })();

@@ -10,7 +10,7 @@ import {
   EmailType,
 } from './emails'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://waitlistkit.com'
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://waitlist.ca'
 
 interface SendResult {
   success: boolean

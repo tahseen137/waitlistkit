@@ -466,7 +466,7 @@ export default function DemoPage() {
               <h3 className="text-lg font-bold mb-3">Your Embed Code</h3>
               <div className="bg-gray-950 rounded-lg p-4 font-mono text-sm text-green-400 overflow-x-auto">
                 <pre>{`<script
-  src="waitlistkit.com/widget.js"
+  src="waitlist.ca/widget.js"
   data-project="productx-launch"
 ></script>`}</pre>
               </div>

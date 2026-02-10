@@ -57,7 +57,16 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
-        const projectId = session.metadata?.projectId
+        
+        if (!session.metadata?.projectId) {
+          console.error('❌ Missing projectId in session metadata')
+          return NextResponse.json(
+            { error: 'Missing projectId in metadata' },
+            { status: 400 }
+          )
+        }
+
+        const projectId = session.metadata.projectId
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
 
