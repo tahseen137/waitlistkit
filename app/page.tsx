@@ -316,6 +316,9 @@ export default function Home() {
           <Link href="/pricing" className="text-indigo-600 hover:underline">Pricing</Link>
           <Link href="/blog" className="text-indigo-600 hover:underline">Blog</Link>
         </div>
+        <p className="mt-4 text-xs text-gray-400">
+          Keep your waitlist engaged after launch → <a href="https://revive-hq.com" target="_blank" rel="noopener noreferrer" className="text-indigo-500 hover:underline">Revive</a>
+        </p>
       </footer>
     </div>
   )
