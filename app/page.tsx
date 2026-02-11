@@ -48,7 +48,7 @@ export default function Home() {
       {/* Product Hunt Banner */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 px-4 text-center">
         <a 
-          href="https://www.producthunt.com/products/waitlistkit" 
+          href="https://www.producthunt.com/products/waitlistkit-3" 
           target="_blank" 
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 hover:underline font-medium"
@@ -297,7 +297,7 @@ export default function Home() {
               We launch on Product Hunt Monday. Your review means the world to us!
             </p>
             <a 
-              href="https://www.producthunt.com/products/waitlistkit" 
+              href="https://www.producthunt.com/products/waitlistkit-3" 
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white text-indigo-600 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition text-sm"
