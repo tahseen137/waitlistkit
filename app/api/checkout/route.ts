@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     const stripe = getStripe()
     const session = await stripe.checkout.sessions.create({
-      mode: 'subscription',
+      mode: 'payment',
       payment_method_types: ['card'],
       line_items: [
         {
@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      customer_email: email,
+      ...(email ? { customer_email: email } : {}),
       metadata: {
         projectId: projectId || '',
       },

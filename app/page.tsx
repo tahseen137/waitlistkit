@@ -21,6 +21,32 @@ export default function Home() {
       .catch(() => setStats(null))
   }, [])
 
+  const handleCheckout = async (priceId: string) => {
+    setLoading(true)
+    setError('')
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          priceId, 
+          email: email || undefined 
+        }),
+      })
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        throw new Error('Checkout failed')
+      }
+    } catch (err) {
+      console.error(err)
+      setError('Checkout failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -203,55 +229,83 @@ export default function Home() {
         </div>
 
         {/* Pricing */}
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Simple Pricing</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-lg border-2 border-gray-200">
-              <h3 className="text-2xl font-bold mb-2">Free</h3>
-              <div className="text-4xl font-bold mb-4">$0</div>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  1 waitlist
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12">Launch Special</h2>
+          <div className="grid md:grid-cols-2 gap-8 items-start">
+            
+            {/* Basic - $49 */}
+            <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+              <h3 className="text-2xl font-bold mb-2 text-gray-800">WaitlistKit V3</h3>
+              <div className="flex items-baseline mb-4">
+                <span className="text-4xl font-extrabold text-gray-900">$49</span>
+                <span className="ml-2 text-gray-500 font-medium">one-time</span>
+              </div>
+              <p className="text-gray-500 mb-6 text-sm">Everything you need to capture emails and grow viral.</p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center text-gray-700">
+                  <span className="text-green-500 mr-3">✓</span>
+                  Unlimited Waitlists
                 </li>
-                <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  100 signups
+                <li className="flex items-center text-gray-700">
+                  <span className="text-green-500 mr-3">✓</span>
+                  Unlimited Signups
                 </li>
-                <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Referral tracking
+                <li className="flex items-center text-gray-700">
+                  <span className="text-green-500 mr-3">✓</span>
+                  Viral Referral System
                 </li>
-                <li className="flex items-center">
-                  <span className="text-green-500 mr-2">✓</span>
-                  Admin dashboard
+                <li className="flex items-center text-gray-700">
+                  <span className="text-green-500 mr-3">✓</span>
+                  Admin Dashboard & CSV Export
                 </li>
               </ul>
+              
+              <button 
+                onClick={() => handleCheckout('price_1SzzG2AJmUBqj9CQwWv3eCiu')}
+                className="w-full bg-gray-100 text-gray-900 font-bold py-3 rounded-lg hover:bg-gray-200 transition border border-gray-300"
+              >
+                Get Basic License
+              </button>
             </div>
-            <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-xl shadow-2xl transform scale-105">
-              <h3 className="text-2xl font-bold mb-2">Pro</h3>
-              <div className="text-4xl font-bold mb-4">$19<span className="text-xl">/mo</span></div>
-              <ul className="space-y-3 mb-6">
-                <li className="flex items-center">
-                  <span className="text-yellow-300 mr-2">✓</span>
-                  Unlimited waitlists
+
+            {/* Bundle - $69 */}
+            <div className="bg-gradient-to-br from-indigo-600 to-purple-700 text-white p-8 rounded-xl shadow-2xl relative overflow-hidden transform md:-translate-y-4 md:scale-105 border-4 border-yellow-400">
+              <div className="absolute top-0 right-0 bg-yellow-400 text-indigo-900 text-xs font-bold px-3 py-1 rounded-bl-lg uppercase tracking-wider">
+                Founder's Bundle
+              </div>
+              
+              <h3 className="text-2xl font-bold mb-2">Complete Launch Pack</h3>
+              <div className="flex items-baseline mb-4">
+                <span className="text-5xl font-extrabold text-white">$69</span>
+                <span className="ml-2 text-indigo-200 font-medium line-through decoration-red-400 decoration-2">$98</span>
+              </div>
+              <p className="text-indigo-100 mb-6 text-sm font-medium">Launch your waitlist AND protect your revenue.</p>
+              
+              <ul className="space-y-3 mb-8">
+                <li className="flex items-center font-semibold">
+                  <span className="bg-yellow-400 text-indigo-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-3">★</span>
+                  Everything in WaitlistKit V3
                 </li>
-                <li className="flex items-center">
-                  <span className="text-yellow-300 mr-2">✓</span>
-                  Unlimited signups
+                <li className="flex items-center font-semibold">
+                  <span className="bg-yellow-400 text-indigo-900 rounded-full w-5 h-5 flex items-center justify-center text-xs mr-3">★</span>
+                  <span><span className="underline decoration-yellow-400 decoration-2 font-bold">Revive</span> (Churn Recovery)</span>
                 </li>
-                <li className="flex items-center">
-                  <span className="text-yellow-300 mr-2">✓</span>
-                  Custom branding
+                <li className="flex items-center text-indigo-100 text-sm pl-8">
+                  Recover failed payments automatically
                 </li>
-                <li className="flex items-center">
-                  <span className="text-yellow-300 mr-2">✓</span>
-                  Priority support
+                <li className="flex items-center text-indigo-100 text-sm pl-8">
+                  Retain revenue with smart emails
                 </li>
               </ul>
-              <a href="/pricing" className="block w-full bg-white text-indigo-600 font-bold py-3 rounded-lg hover:bg-gray-100 transition text-center">
-                Upgrade to Pro
-              </a>
+              
+              <button 
+                onClick={() => handleCheckout('price_1SzzHWAJmUBqj9CQsblb2qLP')}
+                className="w-full bg-yellow-400 text-indigo-900 font-bold py-4 rounded-lg hover:bg-yellow-300 transition shadow-lg transform hover:-translate-y-1"
+              >
+                Get The Bundle (Save $29) →
+              </button>
+              <p className="text-center text-indigo-200 text-xs mt-3">Lifetime access to both products.</p>
             </div>
           </div>
         </div>
