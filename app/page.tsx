@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import LiveDemo from './components/LiveDemo'
@@ -11,6 +11,15 @@ export default function Home() {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [stats, setStats] = useState<{ totalSignups: number; totalProjects: number } | null>(null)
+
+  // Fetch signup stats for social proof counter
+  useEffect(() => {
+    fetch('/api/stats')
+      .then(res => res.json())
+      .then(data => setStats(data))
+      .catch(() => setStats(null))
+  }, [])
 
   const handleCreateProject = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,8 +63,8 @@ export default function Home() {
           className="inline-flex items-center gap-2 hover:underline font-medium"
         >
           <span>🚀</span>
-          <span>We're launching on Product Hunt Monday Feb 10!</span>
-          <span className="bg-white/20 px-2 py-0.5 rounded text-sm">Follow us →</span>
+          <span>We're LIVE on Product Hunt!</span>
+          <span className="bg-white/20 px-2 py-0.5 rounded text-sm">Support us →</span>
         </a>
       </div>
 
@@ -69,7 +78,12 @@ export default function Home() {
               <span className="w-6 h-6 rounded-full bg-purple-300 flex items-center justify-center text-xs">👤</span>
               <span className="w-6 h-6 rounded-full bg-pink-300 flex items-center justify-center text-xs">👤</span>
             </span>
-            <span>Join 100+ founders building their next launch</span>
+            <span>
+              {stats && stats.totalSignups > 0 
+                ? `${stats.totalSignups.toLocaleString()} ${stats.totalSignups === 1 ? 'signup' : 'signups'} collected` 
+                : 'Join founders building their next launch'}
+              {stats && stats.totalProjects > 0 && ` across ${stats.totalProjects} ${stats.totalProjects === 1 ? 'project' : 'projects'}`}
+            </span>
           </div>
           
           <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -292,9 +306,9 @@ export default function Home() {
           {/* CTA Card */}
           <div className="bg-gradient-to-br from-indigo-600 to-purple-600 p-6 rounded-xl shadow-lg text-white flex flex-col justify-center items-center text-center">
             <div className="text-4xl mb-3">🏆</div>
-            <h3 className="font-bold text-xl mb-2">Be Our First Reviewer!</h3>
+            <h3 className="font-bold text-xl mb-2">Support Us on Product Hunt!</h3>
             <p className="text-white/80 text-sm mb-4">
-              We launch on Product Hunt Monday. Your review means the world to us!
+              We're LIVE on Product Hunt! Your upvote means the world to us!
             </p>
             <a 
               href="https://www.producthunt.com/products/waitlistkit-3" 
@@ -302,7 +316,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="bg-white text-indigo-600 font-semibold px-4 py-2 rounded-lg hover:bg-gray-100 transition text-sm"
             >
-              Follow on Product Hunt →
+              Upvote on Product Hunt →
             </a>
           </div>
         </div>
