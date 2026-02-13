@@ -1,0 +1,67 @@
+{
+  "acp_version": "2026-01-30",
+  "name": "WaitlistKit",
+  "description": "Beautiful waitlist management for modern product launches. Collect signups, track referrals, and engage your audience before launch.",
+  "vendor": {
+    "name": "Motu Inc.",
+    "website": "https://waitlistkit.ca"
+  },
+  "logo_url": "https://waitlistkit.ca/icon-512.png",
+  "api_root": "https://waitlistkit.ca/api/acp",
+  "capabilities": {
+    "payment_handlers": ["dev.acp.tokenized.card"],
+    "features": [
+      "waitlist_management",
+      "referral_tracking",
+      "email_notifications",
+      "analytics_dashboard",
+      "custom_branding",
+      "embeddable_widget"
+    ]
+  },
+  "plans": [
+    {
+      "id": "pro",
+      "name": "Pro",
+      "description": "Perfect for growing products. Up to 5 waitlists and 5,000 subscribers.",
+      "price": {
+        "amount": 4900,
+        "currency": "usd",
+        "billing_period": "one_time"
+      },
+      "features": [
+        "5 waitlists",
+        "5,000 subscribers",
+        "Custom branding",
+        "Email notifications",
+        "Priority support",
+        "CSV export",
+        "Advanced analytics"
+      ]
+    },
+    {
+      "id": "business",
+      "name": "Business",
+      "description": "For serious businesses. Unlimited waitlists and subscribers, plus API access.",
+      "price": {
+        "amount": 6900,
+        "currency": "usd",
+        "billing_period": "one_time"
+      },
+      "features": [
+        "Unlimited waitlists",
+        "Unlimited subscribers",
+        "API access",
+        "Webhooks",
+        "White-label option",
+        "Dedicated support",
+        "Custom integrations",
+        "SLA guarantee"
+      ]
+    }
+  ],
+  "support": {
+    "email": "support@waitlistkit.ca",
+    "documentation": "https://waitlistkit.ca/docs"
+  }
+}
