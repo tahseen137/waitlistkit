@@ -12,6 +12,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [stats, setStats] = useState<{ totalSignups: number; totalProjects: number } | null>(null)
+  
+  // Product Hunt banner - show for 7 days after launch
+  const launchDate = new Date('2025-02-14')
+  const now = new Date()
+  const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / (1000 * 60 * 60 * 24))
+  const showProductHuntBanner = daysSinceLaunch <= 7
 
   // Fetch signup stats for social proof counter
   useEffect(() => {
@@ -81,30 +87,20 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
       {/* Product Hunt Banner - Auto-hides after launch period */}
-      {(() => {
-        // Product Hunt launch date - banner shows for 7 days after launch
-        const launchDate = new Date('2025-02-14')
-        const now = new Date()
-        const daysSinceLaunch = Math.floor((now.getTime() - launchDate.getTime()) / (1000 * 60 * 60 * 24))
-        const showBanner = daysSinceLaunch <= 7
-        
-        if (!showBanner) return null
-        
-        return (
-          <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 px-4 text-center">
-            <a 
-              href="https://www.producthunt.com/products/waitlistkit-3" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 hover:underline font-medium"
-            >
-              <span>🚀</span>
-              <span>We're LIVE on Product Hunt!</span>
-              <span className="bg-white/20 px-2 py-0.5 rounded text-sm">Support us →</span>
-            </a>
-          </div>
-        )
-      })()}
+      {showProductHuntBanner && (
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-2 px-4 text-center">
+          <a 
+            href="https://www.producthunt.com/products/waitlistkit-3" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 hover:underline font-medium"
+          >
+            <span>🚀</span>
+            <span>We're LIVE on Product Hunt!</span>
+            <span className="bg-white/20 px-2 py-0.5 rounded text-sm">Support us →</span>
+          </a>
+        </div>
+      )}
 
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 py-16">
