@@ -55,7 +55,7 @@ export default function LiveDemo() {
   }
 
   const copyReferralLink = () => {
-    const url = `https://waitlistkit.vercel.app/w/demo?ref=${referralCode}`
+    const url = `https://waitlistkit.ca/w/demo?ref=${referralCode}`
     navigator.clipboard.writeText(url)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -166,7 +166,7 @@ export default function LiveDemo() {
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    value={`waitlistkit.vercel.app/w/demo?ref=${referralCode}`}
+                    value={`waitlistkit.ca/w/demo?ref=${referralCode}`}
                     readOnly
                     className="flex-1 px-3 py-2 rounded-lg text-gray-900 text-sm truncate"
                   />

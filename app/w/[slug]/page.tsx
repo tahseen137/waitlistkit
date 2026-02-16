@@ -238,13 +238,17 @@ export default function WaitlistPage() {
           </div>
         )}
 
-        {/* Powered By */}
+        {/* Powered By Badge */}
         <div className="mt-6 text-center">
           <a 
-            href="/"
-            className="text-sm text-gray-600 hover:text-gray-900 transition"
+            href="https://waitlistkit.ca?ref=powered-by"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-600 transition font-medium"
+            style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
           >
-            Powered by WaitlistKit
+            <span className="text-sm">🚀</span>
+            <span>Powered by WaitlistKit</span>
           </a>
         </div>
       </div>

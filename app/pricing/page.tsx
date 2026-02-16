@@ -11,55 +11,77 @@ const plans = [
     description: 'Perfect for testing the waters',
     features: [
       '1 waitlist',
-      '100 subscribers',
-      'Basic analytics',
+      '100 signups',
       'Referral tracking',
       'Embeddable widget',
+      'WaitlistKit branding',
     ],
     cta: 'Get Started',
     href: '/',
     popular: false,
     priceId: null,
     yearlyPriceId: null,
+    isLifetime: false,
+  },
+  {
+    name: 'Starter',
+    price: 19,
+    yearlyPrice: 15,
+    description: 'For small launches',
+    features: [
+      '3 waitlists',
+      '1,000 signups',
+      'Custom branding',
+      'Email notifications',
+      'CSV export',
+      'Basic analytics',
+    ],
+    cta: 'Start Trial',
+    popular: false,
+    priceId: 'price_starter_monthly',
+    yearlyPriceId: 'price_starter_yearly',
+    isLifetime: false,
   },
   {
     name: 'Pro',
-    price: 19,
-    yearlyPrice: 15, // $182.40/year = ~$15.20/mo
-    description: 'For growing products',
-    features: [
-      '5 waitlists',
-      '5,000 subscribers',
-      'Custom branding',
-      'Email notifications',
-      'Priority support',
-      'CSV export',
-      'Advanced analytics',
-    ],
-    cta: 'Upgrade to Pro',
-    popular: true,
-    priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
-    yearlyPriceId: process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
-  },
-  {
-    name: 'Business',
     price: 49,
-    yearlyPrice: 39, // $470.40/year = ~$39.20/mo
+    yearlyPrice: 39,
     description: 'For serious launches',
     features: [
       'Unlimited waitlists',
-      'Unlimited subscribers',
+      'Unlimited signups',
       'API access',
       'Webhooks',
-      'White-label option',
-      'Dedicated support',
+      'Priority support',
+      'Advanced analytics',
       'Custom integrations',
-      'SLA guarantee',
     ],
-    cta: 'Go Business',
+    cta: 'Start Trial',
+    popular: true,
+    priceId: 'price_pro_monthly',
+    yearlyPriceId: 'price_pro_yearly',
+    isLifetime: false,
+  },
+  {
+    name: 'Lifetime',
+    price: 149,
+    yearlyPrice: 149,
+    description: 'Pay once, use forever',
+    features: [
+      'Everything in Pro',
+      'Unlimited waitlists',
+      'Unlimited signups',
+      'API access',
+      'Priority support',
+      'Lifetime access',
+      'No recurring fees',
+    ],
+    cta: 'Get Lifetime Deal',
     popular: false,
-    priceId: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID,
-    yearlyPriceId: process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
+    priceId: 'price_lifetime',
+    yearlyPriceId: 'price_lifetime',
+    isLifetime: true,
+    badge: 'LIMITED OFFER',
   },
 ]
 
@@ -150,47 +172,57 @@ export default function PricingPage() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative bg-white rounded-2xl shadow-xl p-8 ${
+              className={`relative bg-white rounded-2xl shadow-xl p-6 ${
                 plan.popular
                   ? 'ring-2 ring-indigo-600 scale-105 z-10'
                   : 'border border-gray-200'
               }`}
             >
               {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold px-4 py-1 rounded-full">
-                    Most Popular
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    POPULAR
+                  </span>
+                </div>
+              )}
+              
+              {plan.badge && !plan.popular && (
+                <div className="mb-2">
+                  <span className="bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-2 py-1 rounded inline-block">
+                    {plan.badge}
                   </span>
                 </div>
               )}
 
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{plan.name}</h3>
-                <p className="text-gray-500 mb-4">{plan.description}</p>
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h3>
+                <p className="text-gray-500 text-sm mb-4">{plan.description}</p>
                 <div className="flex items-end justify-center gap-1">
-                  <span className="text-5xl font-bold text-gray-900">
-                    ${billingPeriod === 'yearly' ? plan.yearlyPrice : plan.price}
+                  <span className="text-4xl font-bold text-gray-900">
+                    ${plan.isLifetime ? plan.price : (billingPeriod === 'yearly' ? plan.yearlyPrice : plan.price)}
                   </span>
                   {plan.price > 0 && (
-                    <span className="text-gray-500 mb-2">/month</span>
+                    <span className="text-gray-500 mb-2 text-sm">
+                      {plan.isLifetime ? 'once' : '/mo'}
+                    </span>
                   )}
                 </div>
-                {billingPeriod === 'yearly' && plan.price > 0 && (
-                  <p className="text-sm text-gray-500 mt-1">
+                {billingPeriod === 'yearly' && plan.price > 0 && !plan.isLifetime && (
+                  <p className="text-xs text-gray-500 mt-1">
                     Billed ${plan.yearlyPrice * 12}/year
                   </p>
                 )}
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-2 mb-6">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-3">
+                  <li key={feature} className="flex items-start gap-2">
                     <svg
-                      className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5"
+                      className="w-4 h-4 text-green-500 flex-shrink-0 mt-0.5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -202,7 +234,7 @@ export default function PricingPage() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    <span className="text-gray-600">{feature}</span>
+                    <span className="text-gray-600 text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>

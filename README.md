@@ -2,71 +2,47 @@
 
 **Build viral waitlists in 60 seconds with built-in referral tracking**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tahseen137/waitlistkit)
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://waitlistkit-seven.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-5-2D3748)](https://www.prisma.io/)
+
+[Live Demo](https://waitlistkit.ca/demo) • [Documentation](https://waitlistkit.ca) • [Pricing](https://waitlistkit.ca/pricing)
 
 ---
 
-## 📖 About
+## What is WaitlistKit?
 
-WaitlistKit is a **viral waitlist builder** designed to help you launch faster and grow organically. Add a beautiful email capture widget to any website with a single script tag—no backend required. Users receive unique referral links that move them up the waitlist when friends sign up, creating a viral growth loop.
+WaitlistKit is an **open-source viral waitlist builder** that helps founders launch faster and grow organically. Add a beautiful email capture widget to any website with a single script tag—no backend required.
 
-Perfect for:
-- 🚀 Product launches & MVPs
-- 📱 App pre-launch campaigns
-- 🎯 Lead generation
-- 📢 Marketing campaigns
-
-**Live Demo:** [waitlistkit-seven.vercel.app](https://waitlistkit-seven.vercel.app)
-
----
-
-## ✨ Features
-
-### Core Features
-- ⚡ **60-Second Setup** — One script tag, zero backend configuration
-- 🔗 **Viral Referrals** — Automatic unique referral links for every signup
-- 📊 **Position Tracking** — Users see their waitlist position in real-time
-- 🎨 **Customizable Widget** — Match your brand with custom colors, logos, and copy
-- 📧 **Email Validation** — Built-in duplicate prevention and validation
-
-### Admin Features
-- 📈 **Admin Dashboard** — View all signups, positions, and referral chains
-- 📥 **CSV Export** — Export your entire waitlist for email campaigns
-- 🔒 **Secure Access** — Admin panel protected with secure tokens
-- 🎯 **Referral Analytics** — Track who's driving the most signups
-
-### Technical Features
-- 🌐 **Embeddable Widget** — Works on any HTML site
-- 🔄 **Real-time Updates** — Instant position updates when friends join
-- 📱 **Responsive Design** — Mobile-optimized UI
-- 🗄️ **Database Flexibility** — SQLite for dev, PostgreSQL for production
+**Key Features:**
+- 🔗 **Viral Referrals** — Each user gets a unique referral link that moves them up when friends join
+- ⚡ **60-Second Setup** — One script tag, zero configuration
+- 📊 **Admin Dashboard** — View signups, track referrals, export to CSV
+- 🎨 **Customizable** — Match your brand colors, logo, and copy
+- 📧 **Drip Emails** — Automated welcome sequence via Resend
+- 💳 **Monetizable** — Built-in Stripe integration for paid tiers
 
 ---
 
-## 🛠️ Tech Stack
+## Quick Start
 
-| Layer | Technology |
-|-------|-----------|
-| **Framework** | Next.js 14 (App Router) |
-| **Language** | TypeScript |
-| **Database** | Prisma ORM (SQLite/PostgreSQL) |
-| **Styling** | Tailwind CSS |
-| **UI Components** | React Hot Toast |
-| **Deployment** | Vercel |
-| **ID Generation** | nanoid |
+### Option 1: Use Hosted Version (Easiest)
 
----
+1. Go to [waitlistkit.ca](https://waitlistkit.ca)
+2. Create a waitlist (free tier: 1 waitlist, 100 signups)
+3. Copy the embed code to your website:
 
-## 🚀 Getting Started
+```html
+<script 
+  src="https://waitlistkit.ca/widget.js" 
+  data-project="your-project-slug"
+  data-waitlistkit
+></script>
+```
 
-### Prerequisites
-- Node.js 18+ 
-- npm or yarn
-- Git
-
-### Installation
+### Option 2: Self-Host (Full Control)
 
 ```bash
 # Clone the repository
@@ -76,180 +52,103 @@ cd waitlistkit
 # Install dependencies
 npm install
 
-# Set up environment variables
+# Set up environment
 cp .env.example .env
-```
+# Edit .env with your database URL
 
-### Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-# Database
-DATABASE_URL="file:./dev.db"
-
-# For production, use PostgreSQL:
-# DATABASE_URL="postgresql://user:password@host:5432/database"
-
-# Stripe (for payments - get from https://dashboard.stripe.com/test/apikeys)
-STRIPE_SECRET_KEY="sk_test_..."
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_..."
-STRIPE_WEBHOOK_SECRET="whsec_..."
-
-# Stripe Price IDs (create these in Stripe Dashboard > Products)
-NEXT_PUBLIC_STRIPE_PRO_PRICE_ID="price_..."
-NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID="price_..."
-STRIPE_PRO_PRICE_ID="price_..."
-STRIPE_BUSINESS_PRICE_ID="price_..."
-```
-
-### Setting up Stripe
-
-1. Create a [Stripe account](https://dashboard.stripe.com/register) (if you don't have one)
-2. Go to **Developers > API Keys** to get your keys
-3. Create two products in **Products**:
-   - **Pro** ($19/month): For growing products
-   - **Business** ($49/month): For serious launches
-4. Copy the Price IDs for each product
-5. For webhooks, create an endpoint pointing to `https://your-domain.com/api/webhooks/stripe`
-   - Listen for: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_succeeded`, `invoice.payment_failed`
-
-### Database Setup
-
-```bash
-# Generate Prisma client
-npx prisma generate
-
-# Run migrations
+# Run database migrations
 npx prisma migrate dev
 
-# (Optional) View database in Prisma Studio
-npx prisma studio
-```
-
-### Development
-
-```bash
 # Start development server
 npm run dev
-
-# Open http://localhost:3000
 ```
 
-### Build for Production
+---
+
+## Tech Stack
+
+| Component | Technology |
+|-----------|------------|
+| Framework | [Next.js 16](https://nextjs.org/) (App Router) |
+| Language | [TypeScript 5](https://www.typescriptlang.org/) |
+| Database | [Prisma](https://www.prisma.io/) + PostgreSQL |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) |
+| Payments | [Stripe](https://stripe.com/) |
+| Email | [Resend](https://resend.com/) |
+| Hosting | [Vercel](https://vercel.com/) |
+
+---
+
+## Environment Variables
+
+Create a `.env` file:
+
+```env
+# Database (required)
+DATABASE_URL="postgresql://user:password@host:5432/database"
+
+# For local development, use SQLite:
+# DATABASE_URL="file:./dev.db"
+
+# Stripe (optional - for paid plans)
+STRIPE_SECRET_KEY="sk_..."
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_..."
+STRIPE_WEBHOOK_SECRET="whsec_..."
+
+# Resend (optional - for emails)
+RESEND_API_KEY="re_..."
+
+# App URL
+NEXT_PUBLIC_BASE_URL="https://your-domain.com"
+```
+
+---
+
+## Project Structure
+
+```
+waitlistkit/
+├── app/
+│   ├── api/                 # API routes
+│   │   ├── signup/          # Waitlist signup endpoint
+│   │   ├── project/         # Project CRUD
+│   │   └── admin/           # Admin endpoints
+│   ├── admin/[projectId]/   # Admin dashboard
+│   ├── demo/                # Interactive demo
+│   └── w/[slug]/            # Public waitlist pages
+├── lib/
+│   ├── prisma.ts            # Database client
+│   ├── email-service.ts     # Drip email logic
+│   ├── rate-limit.ts        # Rate limiting
+│   └── stripe.ts            # Stripe client
+├── prisma/
+│   └── schema.prisma        # Database schema
+└── public/
+    └── widget.js            # Embeddable widget
+```
+
+---
+
+## API Reference
+
+### Sign Up to Waitlist
 
 ```bash
-# Build the application
-npm run build
+POST /api/signup
+Content-Type: application/json
 
-# Start production server
-npm start
-```
-
----
-
-## 📦 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. **Push to GitHub** (if not already)
-   ```bash
-   git add .
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-
-2. **Deploy to Vercel**
-   - Visit [vercel.com](https://vercel.com)
-   - Import your GitHub repository
-   - Add environment variables:
-     - `DATABASE_URL` (PostgreSQL connection string)
-     - `STRIPE_SECRET_KEY` (Stripe secret key)
-     - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` (Stripe publishable key)
-     - `STRIPE_WEBHOOK_SECRET` (Stripe webhook secret)
-     - `NEXT_PUBLIC_STRIPE_PRO_PRICE_ID` (Pro plan price ID)
-     - `NEXT_PUBLIC_STRIPE_BUSINESS_PRICE_ID` (Business plan price ID)
-     - `STRIPE_PRO_PRICE_ID` (Pro plan price ID - server side)
-     - `STRIPE_BUSINESS_PRICE_ID` (Business plan price ID - server side)
-   - Deploy!
-
-3. **Set up Database**
-   - Use [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres), [Supabase](https://supabase.com), or [Neon](https://neon.tech)
-   - Update `DATABASE_URL` in Vercel environment variables
-   - Redeploy to apply migrations
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tahseen137/waitlistkit)
-
-### Alternative Deployment Options
-- **Netlify:** Use `next.config.js` with static export
-- **Railway:** Supports Next.js with PostgreSQL out of the box
-- **DigitalOcean App Platform:** Deploy from GitHub directly
-
----
-
-## 🎯 Usage
-
-### Embedding the Widget
-
-Add this script to any HTML page where you want the waitlist widget:
-
-```html
-<script 
-  src="https://waitlistkit-seven.vercel.app/widget.js" 
-  data-project="your-project-slug"
-  data-waitlistkit
-></script>
-```
-
-### Creating a Project
-
-1. Visit your deployed WaitlistKit instance
-2. Click "Create New Waitlist"
-3. Fill in project details:
-   - **Project Name**
-   - **Slug** (for widget URL)
-   - **Admin Email**
-   - **Branding** (colors, logo, copy)
-4. Copy the embed code
-5. Paste into your website
-
-### Accessing the Admin Dashboard
-
-Navigate to:
-```
-https://your-waitlistkit.vercel.app/admin/[projectId]?secret=[adminSecret]
-```
-
-From the dashboard you can:
-- View all signups with positions
-- Track referral chains
-- Export to CSV
-- Monitor growth metrics
-
----
-
-## 🔌 API Reference
-
-### Public Endpoints
-
-#### `POST /api/signup`
-Add a new signup to the waitlist.
-
-**Request Body:**
-```json
 {
   "email": "user@example.com",
   "projectId": "clx1234567890",
-  "referredBy": "abc123" // optional referral code
+  "referredBy": "abc123"  # optional referral code
 }
 ```
 
 **Response:**
 ```json
 {
-  "success": true,
   "signup": {
-    "id": "signup_id",
+    "id": "...",
     "email": "user@example.com",
     "position": 42,
     "referralCode": "xyz789"
@@ -257,101 +156,89 @@ Add a new signup to the waitlist.
 }
 ```
 
-#### `GET /api/project/[slug]`
-Fetch project details by slug.
+### Get Project Details
 
-**Response:**
-```json
-{
-  "id": "project_id",
-  "name": "My Awesome Product",
-  "headline": "Join the waitlist",
-  "primaryColor": "#6366f1",
-  "totalSignups": 1337
-}
+```bash
+GET /api/project/{slug}
 ```
 
-### Admin Endpoints
+### Admin: Get All Signups
 
-#### `GET /api/admin/[projectId]?secret=[adminSecret]`
-Fetch all signups for a project.
+```bash
+GET /api/admin/{projectId}
+Headers: x-admin-secret: your-admin-secret
+```
 
-#### `GET /api/admin/[projectId]/export?secret=[adminSecret]`
-Export waitlist as CSV.
+### Admin: Export CSV
 
----
-
-## 🎨 Customization
-
-### Brand Colors
-Update `primaryColor` when creating a project to match your brand.
-
-### Custom Copy
-Customize all widget text:
-- `headline` - Main heading
-- `subheadline` - Supporting text
-- `buttonText` - CTA button label
-
-### Logo
-Upload a logo URL to display in the widget.
-
-### Advanced Customization
-Edit the widget source in `public/widget.js` for complete control over styling and behavior.
+```bash
+GET /api/admin/{projectId}/export
+Headers: x-admin-secret: your-admin-secret
+```
 
 ---
 
-## 📊 Database Schema
+## Deployment
 
-### Projects
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | String | Unique project ID |
-| `slug` | String | URL-friendly identifier |
-| `name` | String | Project name |
-| `primaryColor` | String | Hex color code |
-| `adminEmail` | String | Admin contact |
-| `adminSecret` | String | Admin access token |
+### Deploy to Vercel (Recommended)
 
-### Signups
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | String | Unique signup ID |
-| `email` | String | User email |
-| `position` | Int | Waitlist position |
-| `referralCode` | String | Unique referral code |
-| `referredBy` | String | Referrer's code (optional) |
-| `referralCount` | Int | Number of referrals |
+1. Fork this repository
+2. Connect to Vercel
+3. Add environment variables
+4. Deploy!
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/tahseen137/waitlistkit)
+
+### Database Options
+
+- **[Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres)** — Easiest with Vercel
+- **[Supabase](https://supabase.com/)** — Generous free tier
+- **[Neon](https://neon.tech/)** — Serverless Postgres
 
 ---
 
-## 🤝 Contributing
+## Pricing (Hosted Version)
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+| Plan | Price | Features |
+|------|-------|----------|
+| **Free** | $0 | 1 waitlist, 100 signups |
+| **Starter** | $19/mo | 3 waitlists, 1K signups |
+| **Pro** | $49/mo | Unlimited everything |
+| **Lifetime** | $149 once | Pro features forever |
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+Self-hosted = **free forever** with MIT license.
 
 ---
 
-## 🙏 Acknowledgments
+## Contributing
 
-- Built with [Next.js](https://nextjs.org/)
-- Database powered by [Prisma](https://www.prisma.io/)
-- Deployed on [Vercel](https://vercel.com)
+Contributions are welcome! Please read our contributing guidelines before submitting a PR.
+
+```bash
+# Run tests
+npm test
+
+# Lint
+npm run lint
+
+# Build
+npm run build
+```
 
 ---
 
-## 📧 Contact
+## License
 
-For questions or support, please open an issue on GitHub.
+MIT License — do whatever you want with this code.
 
-**Made with ❤️ for indie hackers and builders**
+---
+
+## Support
+
+- 🐛 [Report a bug](https://github.com/tahseen137/waitlistkit/issues)
+- 💬 [Discussions](https://github.com/tahseen137/waitlistkit/discussions)
+- 📧 [Email](mailto:support@waitlistkit.ca)
+
+---
+
+**Built with ❤️ for indie hackers and founders who ship fast**

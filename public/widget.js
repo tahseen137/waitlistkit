@@ -2,7 +2,7 @@
   // Get the current script tag to read data attributes
   const script = document.currentScript || document.querySelector('script[data-waitlistkit]');
   const projectSlug = script.getAttribute('data-project');
-  const apiUrl = script.getAttribute('data-api') || (script.src.includes('localhost') ? 'http://localhost:3000' : 'https://waitlistkit.vercel.app');
+  const apiUrl = script.getAttribute('data-api') || (script.src.includes('localhost') ? 'http://localhost:3000' : 'https://waitlistkit.ca');
   
   if (!projectSlug) {
     console.error('WaitlistKit: data-project attribute is required');
@@ -107,6 +107,25 @@
       border-radius: 4px;
       font-size: 0.875rem;
     }
+    .waitlistkit-badge {
+      margin-top: 1rem !important;
+      text-align: center !important;
+      font-size: 0.75rem !important;
+      color: #9ca3af !important;
+      font-family: system-ui, -apple-system, sans-serif !important;
+    }
+    .waitlistkit-badge a {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.25rem !important;
+      color: #9ca3af !important;
+      text-decoration: none !important;
+      transition: color 0.2s !important;
+      font-weight: 500 !important;
+    }
+    .waitlistkit-badge a:hover {
+      color: #6b7280 !important;
+    }
   `;
   document.head.appendChild(style);
 
@@ -181,6 +200,12 @@
     const errorDiv = document.createElement('div');
     errorDiv.id = `waitlistkit-error-${projectSlug}`;
     container.appendChild(errorDiv);
+    
+    // Add Powered By Badge
+    const badge = document.createElement('div');
+    badge.className = 'waitlistkit-badge';
+    badge.innerHTML = '<a href="https://waitlistkit.ca?ref=powered-by" target="_blank" rel="noopener noreferrer"><span style="font-size: 1em;">🚀</span> Powered by WaitlistKit</a>';
+    container.appendChild(badge);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -243,12 +268,11 @@
           />
         </div>
       </div>
+      <div class="waitlistkit-badge">
+        <a href="https://waitlistkit.ca?ref=powered-by" target="_blank" rel="noopener noreferrer">
+          <span style="font-size: 1em;">🚀</span> Powered by WaitlistKit
+        </a>
+      </div>
     `;
-    // Note: InnerHTML for static template structure is safer here as data is interpolated but escaped by browser context usually? 
-    // Wait, strictly speaking `signup.position` and `referralUrl` are inserted.
-    // `referralUrl` is constructed from `window.location`.
-    // Ideally we'd use DOM creation here too, but for simplicity/readability of the success message template, and lower risk of XSS in success state (data from server/url), I'll leave it as template literal but could sanitize inputs if needed.
-    // However, since `signup.position` is a number and `referralUrl` is URL, risk is low.
-    // The previous implementation used innerHTML everywhere. This is a significant improvement.
   }
 })();

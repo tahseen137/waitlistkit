@@ -2,9 +2,28 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { generateReferralCode, isValidEmail } from '@/lib/utils'
 import { sendWelcomeEmail } from '@/lib/email-service'
+import { checkRateLimit, getClientIP } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting: 10 signups per minute per IP
+    const clientIP = getClientIP(request)
+    const rateLimit = checkRateLimit(`signup:${clientIP}`, 10, 60000)
+    
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        { error: 'Too many requests. Please try again later.' },
+        { 
+          status: 429,
+          headers: {
+            'Retry-After': Math.ceil((rateLimit.reset - Date.now()) / 1000).toString(),
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': rateLimit.reset.toString()
+          }
+        }
+      )
+    }
+
     const body = await request.json()
     const { email, projectId, referredBy } = body
 
