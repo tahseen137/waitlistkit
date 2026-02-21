@@ -8,6 +8,23 @@ const nextConfig = {
     // For hackathon speed - disable strict type checking during build
     ignoreBuildErrors: true,
   },
+  async redirects() {
+    return [
+      // 301 redirect waitlistkit.dev → waitlistkit.ca (canonical domain)
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "waitlistkit.dev" }],
+        destination: "https://waitlistkit.ca/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.waitlistkit.dev" }],
+        destination: "https://waitlistkit.ca/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
