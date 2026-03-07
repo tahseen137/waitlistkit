@@ -23,6 +23,19 @@ const nextConfig = {
         destination: "https://waitlistkit.ca/:path*",
         permanent: true,
       },
+      // 301 redirect waitlistkit.com → waitlistkit.ca (canonical domain)
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "waitlistkit.com" }],
+        destination: "https://waitlistkit.ca/:path*",
+        permanent: true,
+      },
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.waitlistkit.com" }],
+        destination: "https://waitlistkit.ca/:path*",
+        permanent: true,
+      },
     ];
   },
   async headers() {
