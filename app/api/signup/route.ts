@@ -4,6 +4,30 @@ import { generateReferralCode, isValidEmail } from '@/lib/utils'
 import { sendWelcomeEmail } from '@/lib/email-service'
 import { checkRateLimit, getClientIP } from '@/lib/rate-limit'
 
+// Retry wrapper for transient DB connection errors (e.g., Neon cold start)
+async function withRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn()
+    } catch (err: unknown) {
+      const isConnectError = err instanceof Error && (
+        err.message.includes('Connection') ||
+        err.message.includes('ECONNRESET') ||
+        err.message.includes('timeout') ||
+        err.message.includes('P1001') ||  // Prisma: can't reach database
+        err.message.includes('P1017')     // Prisma: server closed connection
+      )
+      if (attempt < retries && isConnectError) {
+        // Brief backoff before retry (100ms, 300ms)
+        await new Promise(resolve => setTimeout(resolve, 100 * Math.pow(3, attempt)))
+        continue
+      }
+      throw err
+    }
+  }
+  throw new Error('Unreachable')
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Rate limiting: 10 signups per minute per IP
@@ -35,11 +59,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check if project exists
-    const project = await prisma.project.findUnique({
+    // Check if project exists (wrapped in retry for Neon cold-start resilience)
+    const project = await withRetry(() => prisma.project.findUnique({
       where: { id: projectId },
       include: { _count: { select: { signups: true } } }
-    })
+    }))
 
     if (!project) {
       return NextResponse.json(
